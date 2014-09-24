@@ -1,6 +1,6 @@
 {
-	"name": "inspector-gadget",
-	"version": "1.0.0",
+	'name': "inspector-gadget",
+	"version": "0.0.1",
 	"authors": [
 		"Doug Turnbull <softwaredoug@gmail.com>"
 	],
@@ -10,7 +10,11 @@
 		"inspector",
 		"angularjs",
 		"directive"
+  ],
+	"authors": [
+		"Doug Turnbull <softwaredoug@gmail.com>"
 	],
+	"description": "Demo",
 	"license": "MIT",
 	"ignore": [
 		"**/.*",
@@ -21,9 +25,12 @@
 	],
 	"dependencies": {
 		"angular":"~1.2.0",
+    "jquery":"~1.11.0",
+    "jquery.ui": "~1.11.0",
 		"angular-animate":"~1.2.0",
 		"angular-sanitize":"~1.2.0",
-		"angular-touch":"~1.2.0"
+		"angular-touch":"~1.2.0",
+		"angular-route":"~1.2.0"
 	},
 	"devDependencies": {
 	}

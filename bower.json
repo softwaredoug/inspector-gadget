@@ -1,5 +1,5 @@
 {
-	'name': "inspector-gadget",
+	"name": "inspector-gadget",
 	"version": "0.0.1",
 	"authors": [
 		"Doug Turnbull <softwaredoug@gmail.com>"
@@ -11,9 +11,6 @@
 		"angularjs",
 		"directive"
   ],
-	"authors": [
-		"Doug Turnbull <softwaredoug@gmail.com>"
-	],
 	"description": "Demo",
 	"license": "MIT",
 	"ignore": [

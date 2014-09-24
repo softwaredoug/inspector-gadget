@@ -17,6 +17,8 @@
 	],
 	"dependencies": {
 		"angular":"~1.2.0",
+    "jquery":"~1.11.0",
+    "jquery.ui": "~1.11.0",
 		"angular-animate":"~1.2.0",
 		"angular-sanitize":"~1.2.0",
 		"angular-touch":"~1.2.0",

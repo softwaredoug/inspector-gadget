@@ -12,6 +12,28 @@ angular.module('swd.inspector-gadget')
     template: '<span ng-transclude></span>',
     
     link: function(scope, element, attrs) {
+      var title = element.find('inspector-title');
+      var errStr = '';
+      if (title.length !== 1) {
+        errStr = 'inspector-gadget: no inspector-title specified, or multiple titles specified';
+        console.err(errStr);
+        throw errStr;
+      }
+      title = title[0];
+      title.hidden = true;
+      title = title.innerHTML;
+      
+      var content = element.find('inspector-content');
+      if (content.length !== 1) {
+        errStr = 'inspector-gadget: no inspector-content specified, or multiple contents specified';
+        console.err(errStr);
+        throw errStr;
+      }
+      content = content[0];
+      content.hidden = true;
+      content = content.innerHTML;
+
+
       // TODO pass unpack attrs, pass as arguments 
       //
       var bootstrArgs = {};
@@ -38,11 +60,10 @@ angular.module('swd.inspector-gadget')
       popConfig.html = true;
       popConfig.title = function() {
         console.log('get title');
-        return scope._insp.title;
+        return title;
       };
       popConfig.content = function() {
-        console.log('get content');
-        return scope._insp.content;
+        return content;
       };
       popConfig.trigger = 'manual';
       element.mouseenter(function() {
@@ -83,62 +104,5 @@ angular.module('swd.inspector-gadget')
       console.log('popover created: ' + element.html());
     },
 
-    controller: function($scope) {
-      $scope._insp = {};
-      $scope._insp.title = '<b>No Title Specified</b>';
-      $scope._insp.content = '<b>No Content Specified</b>';
-      this.setTitle = function(titleHtml) {
-        $scope._insp.title = titleHtml;
-      };
-
-      this.setContent = function(contentHtml) {
-        $scope._insp.content = contentHtml;
-      };
-      
-      this.setAnchorElm = function(anchorHtml) {
-        $scope._insp.anchor = anchorHtml;
-      };
-    }
-    
   };
 });
-
-
-angular.module('swd.inspector-gadget')
-  .directive('inspectorTitle', function () {
-    return {
-      restrict: 'E',
-      require: '^inspectorGadget',
-      link: function(scope, element, attr, inspCtrl) {
-        console.log('passing title');
-        inspCtrl.setTitle(element.html());
-        element.html('');
-      }
-    };
-  });
-
-angular.module('swd.inspector-gadget')
-  .directive('inspectorContent', function () {
-    return {
-      restrict: 'E',
-      require: '^inspectorGadget',
-      link: function(scope, element, attr, inspCtrl) {
-        console.log('passing content');
-        inspCtrl.setContent(element.html());
-        element.html('');
-      }
-    };
- });
-
-angular.module('swd.inspector-gadget')
-  .directive('inspectorAnchor', function () {
-    return {
-      restrict: 'E',
-      transclude: true,
-      template: '<div class="_insp_anchor" ng-transclude></div>',
-      require: '^inspectorGadget',
-      link: function(scope, element, attr, inspCtrl) {
-        inspCtrl.setAnchor(element.html());
-      }
-    };
- });

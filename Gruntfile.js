@@ -105,14 +105,14 @@ module.exports = function(grunt) {
 					src: ['inspector-gadget.css'],
 					dest: 'inspector-gadget.min.css'
 				}
-			}/*,
+			},
 			karma: {
 				unit: {
-					configFile: publicPathRelativeRoot+'config/karma.conf.js',
+					configFile: 'karma.conf.js',
 					singleRun: true,
 					browsers: ['PhantomJS']
 				}
-			}*/
+			}
 		});
 		
 		

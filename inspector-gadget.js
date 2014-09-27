@@ -37,6 +37,13 @@ angular.module('swd.inspector-gadget')
     return bootstrArgs;
   };
 
+  var getPopoverContainer = function(popoverId) {
+    /*global $*/
+    var elm = $('div[data-inspector-gadget-tag="' + popoverId + '"]');
+    var popover = elm.parent().parent();
+    return popover;
+  };
+
   var uniqueDirective = 1;
 
   return {
@@ -52,7 +59,8 @@ angular.module('swd.inspector-gadget')
       // using controllers/scope to communicate between sub-directives 
       // the problem with using scope is that scope is not isolated in this directive,
       // there's no way not to interfere with a sibling inspector-gadget element
-      var titleHtml = getThenMute(element, 'inspector-title', uniqueDirective++);
+      var myPopoverId = uniqueDirective++;
+      var titleHtml = getThenMute(element, 'inspector-title', myPopoverId);
       var contentHtml = getThenMute(element, 'inspector-content');
 
       var popConfig = collectPopoverAttrArgs(attrs);
@@ -71,7 +79,7 @@ angular.module('swd.inspector-gadget')
         // trigger hover event, open popover, link btn to modal
         anchoredDiv.popover('show');
         // TODO remaining problem -- this compiles 
-        var popCont = $('.popover');
+        var popCont = getPopoverContainer(myPopoverId);
         console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
         $compile(popCont.contents())(scope);
         scope.$apply();
@@ -79,15 +87,15 @@ angular.module('swd.inspector-gadget')
       anchoredDiv.mouseleave(function() {
         /* only leave if hoverd off content too*/
         console.log('mouseleave');
-        var content = $('.popover');
+        var popCont = getPopoverContainer(myPopoverId);
         console.log('LEAVE LINK');
         var hoveringPopover = false;
 
-        content.mouseenter(function() {
+        popCont.mouseenter(function() {
           console.log('enter pop');
           hoveringPopover = true;
         });
-        content.mouseleave(function() {
+        popCont.mouseleave(function() {
           console.log('leave pop');
           hoveringPopover = false;
         });

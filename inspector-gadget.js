@@ -14,7 +14,10 @@ angular.module('swd.inspector-gadget')
       throw errStr;
     }
     if (tag) {
-      childElm[0].setAttribute('data-inspector-gadget-tag', tag);
+      var tagDiv = document.createElement('div');
+      tagDiv.setAttribute('data-inspector-gadget-tag', tag);
+      tagDiv.setAttribute('style', 'display: none');
+      childElm[0].appendChild(tagDiv);
     }
     var childHtml = childElm[0].innerHTML;
     childElm[0].hidden = true;

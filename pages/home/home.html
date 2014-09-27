@@ -1,35 +1,16 @@
 <div ng-controller='HomeCtrl'>	
   <h2>Basic example, free running counter</h2>
     <inspector-gadget data-placement="bottom">
-        <div class="btn">
-          Mouse me! {{tenSecTimer}}
+        <p>Mouse me! {{tenSecTimer}}</p>
           <p>Marry had a little lamb its fleece was white as snow</p>
-        </div> 
       <inspector-title>
-        Hello <b>World!</b>
+        Hello <b>World! Its {{tenSecTimer * 10}} o'clock</b>
       </inspector-title>
       <inspector-content>
         Ipusum lorem <i>est</i> {{timer}}
       </inspector-content>
     </inspector-gadget>
-
   <hr/>
-
-
-
-  <h2>Click it!!</h2>
-    <inspector-gadget data-placement="bottom">
-        <div class="btn">
-          Mouse the INSANITY! {{tenSecTimer}}
-          <p>Marry had a little lamb its fleece was white as snow</p>
-        </div> 
-      <inspector-title>
-        Hello <b>World!</b>
-      </inspector-title>
-      <inspector-content>
-        <a href="#" ng-click="alert('Click works!')">Click me</a>
-      </inspector-content>
-    </inspector-gadget>
 
 
 

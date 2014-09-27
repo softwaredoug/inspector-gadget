@@ -5,78 +5,78 @@ angular.module('swd.inspector-gadget', []);
 angular.module('swd.inspector-gadget')
   .directive('inspectorGadget', function ($compile) {
 
+  // some helpers
+  var getThenMute = function (element, selector, tag) {
+    var childElm = element.find(selector);
+    if (childElm.length !== 1) {
+      var errStr = 'inspector-gadget expecting exactly one ' + selector + ' 0 or >1 found';
+      console.error(errStr);
+      throw errStr;
+    }
+    if (tag) {
+      childElm[0].setAttribute('data-inspector-gadget-tag', tag);
+    }
+    var childHtml = childElm[0].innerHTML;
+    childElm[0].hidden = true;
+    return childHtml;
+  };
+
+  var collectPopoverAttrArgs = function(attrs) {
+    var bootstrArgs = {};
+    angular.forEach(attrs, function(attrValue, attrName) {
+      // only allow certain attributes
+      if (attrName === 'placement' || attrName === 'animation' ||
+          attrName === 'delay' || attrName === 'container' ||
+          attrName === 'viewport') {
+        bootstrArgs[attrName] = attrValue;
+      } 
+    });
+    return bootstrArgs;
+  };
+
+  var uniqueDirective = 1;
+
   return {
     restrict: 'E',
     transclude: true,
     //template: '<div>CAN WE JUST<div data-toggle="popover" ng-transclude></div></div>',
-    template: '<span ng-transclude></span>',
+    template: '<div style="display: inline-block" class="anchored_div" ng-transclude></div>',
     
     link: function(scope, element, attrs) {
-      var title = element.find('inspector-title');
-      var errStr = '';
-      if (title.length !== 1) {
-        errStr = 'inspector-gadget: no inspector-title specified, or multiple titles specified';
-        console.err(errStr);
-        throw errStr;
-      }
-      title = title[0];
-      title.hidden = true;
-      title = title.innerHTML;
-      
-      var content = element.find('inspector-content');
-      if (content.length !== 1) {
-        errStr = 'inspector-gadget: no inspector-content specified, or multiple contents specified';
-        console.err(errStr);
-        throw errStr;
-      }
-      content = content[0];
-      content.hidden = true;
-      content = content.innerHTML;
+      var anchoredDiv = element.find('.anchored_div');
 
+      // actually directly extracting the content here is preferred to 
+      // using controllers/scope to communicate between sub-directives 
+      // the problem with using scope is that scope is not isolated in this directive,
+      // there's no way not to interfere with a sibling inspector-gadget element
+      var titleHtml = getThenMute(element, 'inspector-title', uniqueDirective++);
+      var contentHtml = getThenMute(element, 'inspector-content');
 
-      // TODO pass unpack attrs, pass as arguments 
-      //
-      var bootstrArgs = {};
-      angular.forEach(attrs, function(attrValue, attrName) {
-        if (attrName.indexOf('data-') === 0) {
-          var attr = attrName.slice(5);
-          // only allow certain attributes
-          if (attr !== 'placement' && attr !== 'animation' &&
-              attr !== 'delay' && attr !== 'container' &&
-              attr !== 'viewport') {
-            var errStr = 'Only a subset of bootstrap popover arguments allowed: ' +
-                         ' placement, animation, delay, container, viewport';
-            console.error(errStr);
-            throw errStr;
-          } else {
-            bootstrArgs[attr] = attrValue;
-          }
-        }
-      });
+      var popConfig = collectPopoverAttrArgs(attrs);
 
       var timeoutObj = null;
-      var popoverContent = null;
-      var popConfig = bootstrArgs;
+      
       popConfig.html = true;
       popConfig.title = function() {
-        console.log('get title');
-        return title;
+        return titleHtml;
       };
       popConfig.content = function() {
-        return content;
+        return contentHtml;
       };
       popConfig.trigger = 'manual';
-      element.mouseenter(function() {
+      anchoredDiv.mouseenter(function() {
         // trigger hover event, open popover, link btn to modal
-        element.popover('show');
-        var popCont = $('.popover-content');
+        anchoredDiv.popover('show');
+        // TODO remaining problem -- this compiles 
+        var popCont = $('.popover');
         console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
         $compile(popCont.contents())(scope);
         scope.$apply();
       });
-      element.mouseleave(function() {
+      anchoredDiv.mouseleave(function() {
         /* only leave if hoverd off content too*/
-        var content = $('.popover-content');
+        console.log('mouseleave');
+        var content = $('.popover');
         console.log('LEAVE LINK');
         var hoveringPopover = false;
 
@@ -91,7 +91,7 @@ angular.module('swd.inspector-gadget')
 
         var hidePop = function() {
           if (!hoveringPopover) {
-            element.popover('hide');
+            anchoredDiv.popover('hide');
           } else {
             timeoutObj = setTimeout(hidePop, 300);
           }
@@ -99,9 +99,9 @@ angular.module('swd.inspector-gadget')
 
         timeoutObj = setTimeout(hidePop, 300);
       });
-      element.popover(popConfig);
+      anchoredDiv.popover(popConfig);
       
-      console.log('popover created: ' + element.html());
+      console.log('popover created: ' + anchoredDiv.html());
     },
 
   };

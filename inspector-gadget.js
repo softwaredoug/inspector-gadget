@@ -2,8 +2,28 @@
 /**
 */
 angular.module('swd.inspector-gadget', []);
+
 angular.module('swd.inspector-gadget')
-  .directive('inspectorGadget', function ($compile) {
+  .service('intPopover', function() {
+    this.bootstrap = function(elm, config) {
+      elm.popover(config);
+    };
+
+    this.show = function(elm) {
+      return elm.popover('show');
+    };
+
+    this.hide = function(elm) {
+      return elm.popover('hide');
+    };
+  });
+
+
+angular.module('swd.inspector-gadget')
+  .directive('inspectorGadget', function ($compile, $document, intPopover) {
+
+  var doc = $document[0];
+  var body = $document.find('body');
 
   // some helpers
   var getThenMute = function (element, selector, tag) {
@@ -14,7 +34,7 @@ angular.module('swd.inspector-gadget')
       throw errStr;
     }
     if (tag) {
-      var tagDiv = document.createElement('div');
+      var tagDiv = doc.createElement('div');
       tagDiv.setAttribute('data-inspector-gadget-tag', tag);
       tagDiv.setAttribute('style', 'display: none');
       childElm[0].appendChild(tagDiv);
@@ -38,8 +58,7 @@ angular.module('swd.inspector-gadget')
   };
 
   var getPopoverContainer = function(popoverId) {
-    /*global $*/
-    var elm = $('div[data-inspector-gadget-tag="' + popoverId + '"]');
+    var elm = body.find('div[data-inspector-gadget-tag="' + popoverId + '"]');
     var popover = elm.parent().parent();
     return popover;
   };
@@ -58,6 +77,7 @@ angular.module('swd.inspector-gadget')
       // actually directly extracting the content here is preferred to 
       // using controllers/scope to communicate between sub-directives 
       // the problem with using scope is that scope is not isolated in this directive,
+      // (we don't want it to be isolated)
       // there's no way not to interfere with a sibling inspector-gadget element
       var myPopoverId = uniqueDirective++;
       var titleHtml = getThenMute(element, 'inspector-title', myPopoverId);
@@ -77,7 +97,7 @@ angular.module('swd.inspector-gadget')
       popConfig.trigger = 'manual';
       anchoredDiv.mouseenter(function() {
         // trigger hover event, open popover, link btn to modal
-        anchoredDiv.popover('show');
+        intPopover.show(anchoredDiv);
         // TODO remaining problem -- this compiles 
         var popCont = getPopoverContainer(myPopoverId);
         console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
@@ -102,7 +122,7 @@ angular.module('swd.inspector-gadget')
 
         var hidePop = function() {
           if (!hoveringPopover) {
-            anchoredDiv.popover('hide');
+            intPopover.hide(anchoredDiv);
           } else {
             timeoutObj = setTimeout(hidePop, 300);
           }
@@ -110,7 +130,7 @@ angular.module('swd.inspector-gadget')
 
         timeoutObj = setTimeout(hidePop, 300);
       });
-      anchoredDiv.popover(popConfig);
+      intPopover.bootstrap(anchoredDiv, popConfig);
       
       console.log('popover created: ' + anchoredDiv.html());
     },

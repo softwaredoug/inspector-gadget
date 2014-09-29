@@ -20,10 +20,13 @@ angular.module('swd.inspector-gadget')
 
 
 angular.module('swd.inspector-gadget')
-  .directive('inspectorGadget', function ($compile, $document, intPopover) {
+  .directive('inspectorGadget', function ($compile, $document, intPopover, $timeout) {
 
   var doc = $document[0];
-  var body = $document.find('body');
+
+  var rootNode = function(elm) {
+    return angular.element(elm.parentsUntil().slice(-1)[0]);
+  };
 
   // some helpers
   var getThenMute = function (element, selector, tag) {
@@ -57,8 +60,8 @@ angular.module('swd.inspector-gadget')
     return bootstrArgs;
   };
 
-  var getPopoverContainer = function(popoverId) {
-    var elm = body.find('div[data-inspector-gadget-tag="' + popoverId + '"]');
+  var getPopoverContainer = function(rootNode, popoverId) {
+    var elm = rootNode.find('div[data-inspector-gadget-tag="' + popoverId + '"]');
     var popover = elm.parent().parent();
     return popover;
   };
@@ -73,6 +76,7 @@ angular.module('swd.inspector-gadget')
     
     link: function(scope, element, attrs) {
       var anchoredDiv = element.find('.anchored_div');
+      var root = rootNode(anchoredDiv);
 
       // actually directly extracting the content here is preferred to 
       // using controllers/scope to communicate between sub-directives 
@@ -99,7 +103,7 @@ angular.module('swd.inspector-gadget')
         // trigger hover event, open popover, link btn to modal
         intPopover.show(anchoredDiv);
         // TODO remaining problem -- this compiles 
-        var popCont = getPopoverContainer(myPopoverId);
+        var popCont = getPopoverContainer(root, myPopoverId);
         console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
         $compile(popCont.contents())(scope);
         scope.$apply();
@@ -124,11 +128,11 @@ angular.module('swd.inspector-gadget')
           if (!hoveringPopover) {
             intPopover.hide(anchoredDiv);
           } else {
-            timeoutObj = setTimeout(hidePop, 300);
+            timeoutObj = $timeout(hidePop, 300);
           }
         };
 
-        timeoutObj = setTimeout(hidePop, 300);
+        timeoutObj = $timeout(hidePop, 300);
       });
       intPopover.bootstrap(anchoredDiv, popConfig);
       

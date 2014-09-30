@@ -1,6 +1,7 @@
 # Better AngularJS Popover with custom HTML and better hovering
 
-[TODO - brief summary]
+[![Build Status](https://travis-ci.org/softwaredoug/inspector-gadget.svg?branch=master)](https://travis-ci.org/softwaredoug/inspector-gadget)
+
 
 ## Demo
 http://softwaredoug.github.io/inspector-gadget/

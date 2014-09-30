@@ -11,29 +11,31 @@ describe('InspectorGadget', function() {
   // inspector-gadget wraps the elements popover() 
   // in a simple service 
   var MockPopover = function() {
-    this.popoverOptions = null;
-    this.popoverCmd = null;
-    this.popoverContent = null;
-    this.popoverTitle = null;
     
     this.bootstrap = function(elm, config) {
-        this.popoverOptions = config;
+      var popoverOptions = config;
+      var popoverContent = null;
+      var popoverTitle = null;
+      var popover;
+
+      var popControl = {
+        show: function() {
+          popoverContent = popoverOptions.content();
+          popoverTitle = popoverOptions.title();
+          // append both to DOM
+          popover = angular.element('<div class="popover">' +
+                                    '<div class="popover-title">' + popoverTitle + '</div>' + 
+                                    '<div class="popover-content">' + popoverContent + '</div>' +
+                                    '</div>');
+          doc.append(popover);
+        },
+        hide: function() {
+          popover.remove();
+        }
+      };    
+      return popControl;
     };
 
-    this.show = function() {
-      this.popoverContent = this.popoverOptions.content();
-      this.popoverTitle = this.popoverOptions.title();
-      // append both to DOM
-      var popover = '<div class="popover">' +
-                    '<div class="popover-title">' + this.popoverTitle + '</div>' + 
-                    '<div class="popover-content">' + this.popoverTitle + '</div>' +
-                    '</div>';
-      doc.append(popover);
-    };
-
-    this.hide = function() {
-      doc.find('.popover').remove();
-    };
   };
 
   var mockPopover = null;
@@ -48,9 +50,23 @@ describe('InspectorGadget', function() {
       $timeout = _$timeout_;
     });
   });
+  
+  var scope = null;
+  var inspElem = null;
+  var anchElem = null;
+  var view = null;
+
+  var createView = function(scope, markup) {
+    var docMarkup = '<body><div>' + markup + '</div></body>';
+    doc = angular.element(docMarkup);
+    inspElem = doc.find('inspector-gadget');
+    var compiled = $compile(doc)(scope);
+    anchElem = angular.element(doc.find('.anchored_div')[0]);
+    $rootScope.$digest();
+    return compiled;
+  };
 
   describe('basic rendering', function() {
-    var createView = function(scope) {
 
       var markup = '<inspector-gadget data-placement="bottom">' +
                    ' <div class="btn">'                          +
@@ -64,24 +80,9 @@ describe('InspectorGadget', function() {
                    ' </inspector-content>' +
                    '</inspector-gadget>';
 
-      var docMarkup = '<body><div>' + markup + '</div></body>';
-
-      doc = angular.element(docMarkup);
-      inspElem = doc.find('inspector-gadget');
-      var compiled = $compile(doc)(scope);
-      anchElem = angular.element(doc.find('.anchored_div')[0]);
-      $rootScope.$digest();
-      return compiled;
-    };
-  
-    var scope = null;
-    var inspElem = null;
-    var anchElem = null;
-    var view = null;
     beforeEach(function() {
       scope = $rootScope.$new();
-      view = createView(scope);
-
+      view = createView(scope, markup);
     });
 
     it('mouseover shows popover', function() {
@@ -93,9 +94,12 @@ describe('InspectorGadget', function() {
     it('updates popover scope', function() {
       anchElem.mouseenter();
       scope.name = 'Doug';
+      scope.animal = 'donkey';
       scope.$digest();
-      var title = doc.find('inspector-title');
+      var title = doc.find('.popover-title');
       expect(title.html().indexOf('Doug')).not.toEqual(-1);
+      var content = doc.find('.popover-content');
+      expect(content.html().indexOf('donkey')).not.toEqual(-1);
     });
     
     it('hides on mouseleave if not hovering popover', function() {
@@ -115,10 +119,81 @@ describe('InspectorGadget', function() {
       $timeout.flush();
       expect(doc.find('.popover').length).toEqual(1);
     });
-  });
-
-  it('baseline', function() {
-    expect(true).toBe(true);
+    
+    it('hides on mouseleave after hovering popover', function() {
+      anchElem.mouseenter();
+      anchElem.mouseleave();
+      expect(doc.find('.popover').length).toEqual(1);
+      var popover = angular.element(doc.find('.popover'));
+      popover.mouseenter();
+      popover.mouseleave();
+      $timeout.flush();
+      expect(doc.find('.popover').length).toEqual(0);
+    });
+    
   });
   
+  describe('multiple popovers', function() {
+      var anchors = null;
+      var inspectors = null;
+      var markup = '<inspector-gadget data-placement="bottom">' +
+                   ' <div class="btn">'                          +
+                   '  <h4>Anchor1</h4> <div>{{name1}}</div>'     +
+                   ' </div>' + 
+                   ' <inspector-title>' + 
+                   ' Title1 <em>{{name1}}</em>' +
+                   ' </inspector-title>' +
+                   ' <inspector-content>' +
+                   '  <p>Mary had a little {{animal}}</p> ' +
+                   ' </inspector-content>' +
+                   '</inspector-gadget>' +
+                   ' ' +
+                   '<inspector-gadget data-placement="bottom">' +
+                   ' <div class="btn">'                          +
+                   '  <h4>Anchor2</h4> <div>{{name2}}</div>'     +
+                   ' </div>' + 
+                   ' <inspector-title>' + 
+                   ' Title2 <em>{{name2}}</em>' +
+                   ' </inspector-title>' +
+                   ' <inspector-content>' +
+                   '  <p>Mary had a little {{animal}}</p> ' +
+                   ' </inspector-content>' +
+                   '</inspector-gadget>';
+      beforeEach(function() {
+        scope = $rootScope.$new();
+        view = createView(scope, markup);
+        anchors = doc.find('.anchored_div');
+        inspectors = doc.find('inspector-gadget');
+      });
+
+      it('shows both popover', function() {
+        var a1 = angular.element(anchors[0]);
+        var a2 = angular.element(anchors[1]);
+        scope.name1 = 'Doug';
+        scope.name2 = 'Matt';
+        scope.$digest();
+        a1.mouseenter();
+        a2.mouseenter();
+        var titles = doc.find('.popover-title');
+        var t1 = angular.element(titles[0]);
+        var t2 = angular.element(titles[1]);
+        expect(titles.length).toEqual(2);
+        expect(t1.html().indexOf('Doug')).not.toBe(-1);
+        expect(t1.html().indexOf('Matt')).toBe(-1);
+        expect(t2.html().indexOf('Doug')).toBe(-1);
+        expect(t2.html().indexOf('Matt')).not.toBe(-1);
+      });
+      
+      it('hides only one popover', function() {
+        var a1 = angular.element(anchors[0]);
+        var a2 = angular.element(anchors[1]);
+        a1.mouseenter();
+        a2.mouseenter();
+        a1.mouseleave();
+        $timeout.flush();
+        var titles = doc.find('.popover-title');
+        expect(titles.length).toEqual(1);
+      });
+  });
+
 });

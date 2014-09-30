@@ -7,15 +7,16 @@ angular.module('swd.inspector-gadget')
   .service('intPopover', function() {
     this.bootstrap = function(elm, config) {
       elm.popover(config);
+      return {
+        show: function() {
+          elm.popover('show');
+        },
+        hide: function() {
+          elm.popover('hide');
+        }
+      };
     };
 
-    this.show = function(elm) {
-      return elm.popover('show');
-    };
-
-    this.hide = function(elm) {
-      return elm.popover('hide');
-    };
   });
 
 
@@ -88,6 +89,7 @@ angular.module('swd.inspector-gadget')
       var contentHtml = getThenMute(element, 'inspector-content');
 
       var popConfig = collectPopoverAttrArgs(attrs);
+      var popControl = null;
 
       var timeoutObj = null;
       
@@ -101,7 +103,7 @@ angular.module('swd.inspector-gadget')
       popConfig.trigger = 'manual';
       anchoredDiv.mouseenter(function() {
         // trigger hover event, open popover, link btn to modal
-        intPopover.show(anchoredDiv);
+        popControl.show();
         // TODO remaining problem -- this compiles 
         var popCont = getPopoverContainer(root, myPopoverId);
         console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
@@ -111,7 +113,7 @@ angular.module('swd.inspector-gadget')
       anchoredDiv.mouseleave(function() {
         /* only leave if hoverd off content too*/
         console.log('mouseleave');
-        var popCont = getPopoverContainer(myPopoverId);
+        var popCont = getPopoverContainer(root, myPopoverId);
         console.log('LEAVE LINK');
         var hoveringPopover = false;
 
@@ -126,7 +128,7 @@ angular.module('swd.inspector-gadget')
 
         var hidePop = function() {
           if (!hoveringPopover) {
-            intPopover.hide(anchoredDiv);
+            popControl.hide();
           } else {
             timeoutObj = $timeout(hidePop, 300);
           }
@@ -134,7 +136,7 @@ angular.module('swd.inspector-gadget')
 
         timeoutObj = $timeout(hidePop, 300);
       });
-      intPopover.bootstrap(anchoredDiv, popConfig);
+      popControl = intPopover.bootstrap(anchoredDiv, popConfig);
       
       console.log('popover created: ' + anchoredDiv.html());
     },

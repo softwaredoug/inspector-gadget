@@ -24,6 +24,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.loadNpmTasks('grunt-remove');
 
 	/**
 	Function that wraps everything to allow dynamically setting/changing grunt options and config later by grunt task. This init function is called once immediately (for using the default grunt options, config, and setup) and then may be called again AFTER updating grunt (command line) options.
@@ -60,6 +62,13 @@ module.exports = function(grunt) {
         }
       },
 
+      ngAnnotate: {
+        insp: {
+          files: {
+            'inspector-gadget.ngann.js': ['inspector-gadget.js']
+          }
+        }
+      },
 			concat: {
 				devCss: {
 					src:    [],
@@ -82,30 +91,30 @@ module.exports = function(grunt) {
 				//quick version - will not fail entire grunt process if there are lint errors
 				beforeconcatQ:   {
 					options: {
+            jshintrc: '.jshintrc',
 						force:	true,
 						ignores: ['**.min.js']
 					},
 					files: {
-						src: ['**.js']
+						src: ['inspector-gadget.js']
 					}
 				}
 			},
 			uglify: {
-				options: {
-					mangle: false
-				},
+        config: {
+          mangle: true
+        },
 				build: {
 					files:  {},
-					src:    'inspector-gadget.js',
+					src:    'inspector-gadget.ngann.js',
 					dest:   'inspector-gadget.min.js'
 				}
 			},
-			cssmin: {
-				dev: {
-					src: ['inspector-gadget.css'],
-					dest: 'inspector-gadget.min.css'
-				}
-			},
+      remove: {
+        annot: {
+          fileList: ['inspector-gadget.ngann.js']
+        }
+      },
 			karma: {
 				unit: {
 					configFile: 'karma.conf.js',
@@ -125,7 +134,8 @@ module.exports = function(grunt) {
 		*/
 		// Default task(s).
 		// grunt.registerTask('default', ['jshint:beforeconcat', 'less:development', 'concat:devJs', 'concat:devCss']);
-		grunt.registerTask('dist', ['jshint:beforeconcatQ', 'cssmin', 'uglify:build']);
+		grunt.registerTask('dist', ['jshint:beforeconcatQ', 'karma:unit', 'ngAnnotate:insp', 'uglify:build', 'remove:annot']);
+		grunt.registerTask('default', ['dist']);
 		grunt.registerTask('serve', ['dist',
                                  'connect:server',
                                  'watch']);

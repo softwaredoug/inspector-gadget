@@ -14,7 +14,9 @@
     "grunt-contrib-less": "~0.8.1",
     "grunt-contrib-uglify": "~0.2.5",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-karma": "~0.6.2"
+    "grunt-karma": "~0.6.2",
+    "grunt-ng-annotate": "^0.4.0",
+    "grunt-remove": "^0.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

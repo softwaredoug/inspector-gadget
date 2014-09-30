@@ -56,7 +56,7 @@ angular.module('swd.inspector-gadget')
           attrName === 'delay' || attrName === 'container' ||
           attrName === 'viewport') {
         bootstrArgs[attrName] = attrValue;
-      } 
+      }
     });
     return bootstrArgs;
   };
@@ -106,23 +106,18 @@ angular.module('swd.inspector-gadget')
         popControl.show();
         // TODO remaining problem -- this compiles 
         var popCont = getPopoverContainer(root, myPopoverId);
-        console.log('compiling popover content: ' + popCont.length + ' timer:' + scope.timer);
         $compile(popCont.contents())(scope);
         scope.$apply();
       });
       anchoredDiv.mouseleave(function() {
         /* only leave if hoverd off content too*/
-        console.log('mouseleave');
         var popCont = getPopoverContainer(root, myPopoverId);
-        console.log('LEAVE LINK');
         var hoveringPopover = false;
 
         popCont.mouseenter(function() {
-          console.log('enter pop');
           hoveringPopover = true;
         });
         popCont.mouseleave(function() {
-          console.log('leave pop');
           hoveringPopover = false;
         });
 
@@ -138,7 +133,6 @@ angular.module('swd.inspector-gadget')
       });
       popControl = intPopover.bootstrap(anchoredDiv, popConfig);
       
-      console.log('popover created: ' + anchoredDiv.html());
     },
 
   };

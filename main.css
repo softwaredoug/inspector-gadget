@@ -3,6 +3,10 @@
  height: 500px;
 }
 
+.container {
+    margin-bottom: 100px;
+}
+
 .popover {
     max-width: 800px;
     width: auto;

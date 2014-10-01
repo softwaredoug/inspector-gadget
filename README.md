@@ -1,6 +1,6 @@
 # Inspector Gadget
 
-Better AngularJS Popover with HTML content. I frequently need a better popover than the one [angular-ui bootstrap](http://angular-ui.github.io/bootstrap/) provides. So I thought I'd open source our implementation! See a [few demos](http://softwaredoug.github.io/inspector-gadget/).
+Better AngularJS Popover with HTML content. I frequently need a richer popover experience than the one [angular-ui bootstrap](http://angular-ui.github.io/bootstrap/) provides. So I thought I'd open source our implementation! See a [few demos](http://softwaredoug.github.io/inspector-gadget/).
 
 [![Build Status](https://travis-ci.org/softwaredoug/inspector-gadget.svg?branch=master)](https://travis-ci.org/softwaredoug/inspector-gadget)
 

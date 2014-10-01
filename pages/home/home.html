@@ -1,8 +1,114 @@
+<div class="container">
+
+<h1>Inspector Gadget</h1>
+<p>Inspector Gadget is a rich AngularJS Popover implementation (using bootstrap's popover) that lets you weave rich HTML into your popovers. As opposed to <a href="http://angular-ui.github.io/bootstrap/">angular-bootstrap's</a> popover, this popover lets you intersperse rich HTML to let users drill down into rich, marked-up content like charts and graphs. Other features include smart hovering, letting your user mouseover the popover without it closing!</p>
+
+<h2>Popout Graphs!</h2>
+
+<p>Check out this example using the <a href="http://plnkr.co/edit/T9J7bz?p=preview">angular charts</a> module. Mouseover the link to see a rich graph.</p>
+
+<inspector-gadget data-container="body">
+  <a style="background: #ccc" class="btn btn-default">Hover to see company sales!</a>
+
+  <inspector-title style="width: 100%">
+    Latest Prices
+  </inspector-title>
+
+  <inspector-content>
+    <div ng-controller="ChartsCtrl">
+      <div 
+        data-ac-chart="'bar'" 
+        data-ac-data="data" 
+        data-ac-config="config" 
+        class="chart">
+      </div>
+    </div>
+  </inspector-content>
+
+
+</inspector-gadget>
+
+
+
+<div class="row">
+  <h3 class="col-md-6">Markup</h3>
+  <h3 class="col-md-6">Controller</h3>
+</div>
+<div class="row">
+  <pre class="col-md-6">
+<code>&lt;inspector-gadget data-container=&quot;body&quot;&gt;
+  &lt;a class=&quot;btn&quot;&gt;Hover to check computer prices&lt;/a&gt;
+
+  &lt;inspector-title style=&quot;width: 100%&quot;&gt;
+    Latest Prices
+  &lt;/inspector-title&gt;
+
+  &lt;inspector-content&gt;
+    &lt;div ng-controller=&quot;ChartsCtrl&quot;&gt;
+      &lt;div 
+        data-ac-chart=&quot;'bar'&quot; 
+        data-ac-data=&quot;data&quot; 
+        data-ac-config=&quot;config&quot; 
+        class=&quot;chart&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/inspector-content&gt;
+&lt;/inspector-gadget&gt;
+</code>
+  </pre>
+  <pre class="col-md-6">
+<code>
+angular.module('myApp').controller('ChartsCtrl', function($scope) {
+  $scope.config = {
+    title: 'Products',
+    tooltips: true,
+    labels: false,
+    mouseover: function() {},
+    mouseout: function() {},
+    click: function() {},
+    legend: {
+      display: true,
+      //could be 'left, right'
+      position: 'right'
+    }
+  };
+
+  $scope.data = {
+    series: ['Sales', 'Income', 'Expense', 'Laptops', 'Keyboards'],
+    data: [{
+      x: "Laptops",
+      y: [100, 500, 0],
+      tooltip: "this is tooltip"
+    }, {
+      x: "Desktops",
+      y: [300, 100, 100]
+    }, {
+      x: "Mobiles",
+      y: [351]
+    }, {
+      x: "Tablets",
+      y: [54, 0, 879]
+    }]
+  };
+});
+</code>
+  </pre>
+</div>
+
+
+
+
+
+
+<h2>Basic example, free running counter</h2>
+<p>Here's another example, using a simple free running counter:</p>
+
 <div ng-controller='HomeCtrl'>	
-  <h2>Basic example, free running counter</h2>
     <inspector-gadget data-placement="bottom">
+      <div style="background: #ccc">
         <p>Mouse me! {{tenSecTimer}}</p>
           <p>Marry had a little lamb its fleece was white as snow</p>
+      </div>
       <inspector-title>
         Hello <b>World! Its {{tenSecTimer * 10}} o'clock</b>
       </inspector-title>
@@ -10,11 +116,40 @@
         Ipusum lorem <i>est</i> {{timer}}
       </inspector-content>
     </inspector-gadget>
-  <hr/>
+</div>
 
+<div class="row">
+  <h3 class="col-md-6">Markup</h3>
+  <h3 class="col-md-6">Controller</h3>
+</div>
+<div class="row">
+  <pre class="col-md-6">
+<code>&lt;div ng-controller='HomeCtrl'&gt;  
+    &lt;inspector-gadget data-placement="bottom"&gt;
+        &lt;p&gt;Mouse me! {{tenSecTimer}}&lt;/p&gt;
+          &lt;p&gt;Marry had a little lamb its fleece was white as snow&lt;/p&gt;
+      &lt;inspector-title&gt;
+        Hello &lt;b&gt;World! Its {{tenSecTimer * 10}} o'clock&lt;/b&gt;
+      &lt;/inspector-title&gt;
+      &lt;inspector-content&gt;
+        Ipusum lorem &lt;i&gt;est&lt;/i&gt; {{timer}}
+      &lt;/inspector-content&gt;
+    &lt;/inspector-gadget&gt;
+&lt;/div&gt;</code>
+  </pre>
+  <pre class="col-md-6">
+angular.module('myApp').controller('HomeCtrl', function($scope, $interval) {
+  $scope.timer = 0;
+  $scope.tenSecTimer = 0;
 
+  $interval(function tick() {
+    $scope.timer++;
+    if ($scope.timer % 10 === 0) {
+      $scope.tenSecTimer++;
+    }
+  }, 1000);
+});
+  </pre>
+</div>
 
-  <div>
-
-  </div>
 </div>

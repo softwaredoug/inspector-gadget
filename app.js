@@ -7,7 +7,7 @@
 
 angular.module('myApp', [
 'ngRoute', 'ngSanitize', 'ngTouch', 'ngAnimate',		//additional angular modules
-'swd.inspector-gadget'
+'swd.inspector-gadget', 'angularCharts'
 ]).
 config(['$routeProvider', '$locationProvider', '$compileProvider', function($routeProvider, $locationProvider, $compileProvider) {
 	/**
@@ -20,7 +20,7 @@ config(['$routeProvider', '$locationProvider', '$compileProvider', function($rou
 	var staticPath;
 	// staticPath ='/angular-directives/inspector-gadget/';		//local
 	staticPath ='/';		//nodejs (local)
-	staticPath ='/inspector-gadget/';		//gh-pages
+	//staticPath ='/inspector-gadget/';		//gh-pages
 	var appPathRoute ='/';
 	var pagesPath =staticPath+'pages/';
 	

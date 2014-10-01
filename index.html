@@ -6,9 +6,11 @@
     <title>inspector-gadget</title>
 
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+	<link rel="stylesheet" href="main.css"/>
 
 </head>
 <body>
+<a href="https://github.com/softwaredoug/inspector-gadget"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
 	<div ng-view></div>
 
   <!-- non angular dependencies -->
@@ -20,12 +22,16 @@
 	<script type="text/javascript" src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-touch/angular-touch.min.js"></script>
 	<script type="text/javascript" src="bower_components/angular-animate/angular-animate.min.js"></script>
+  <script type="text/javascript" src='bower_components/d3/d3.min.js'></script>   
+  <script type="text/javascript" src="bower_components/angular-charts/dist/angular-charts.min.js"></script>
 	
-	<script type="text/javascript" src="inspector-gadget.js"></script>
+  
+  <script type="text/javascript" src="inspector-gadget.js"></script>
 	<!--<script type="text/javascript" src="or-gadget.min.js"></script>-->
 	
 	<script type="text/javascript" src="app.js"></script>
 	
+	<script type="text/javascript" src="pages/home/ChartsCtrl.js"></script>
 	<script type="text/javascript" src="pages/home/HomeCtrl.js"></script>
 </body>
 </html>

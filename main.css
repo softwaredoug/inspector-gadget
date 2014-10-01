@@ -1,0 +1,9 @@
+.chart {
+ width: 500px;
+ height: 500px;
+}
+
+.popover {
+    max-width: 800px;
+    width: auto;
+}

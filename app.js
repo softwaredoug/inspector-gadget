@@ -20,7 +20,7 @@ config(['$routeProvider', '$locationProvider', '$compileProvider', function($rou
 	var staticPath;
 	// staticPath ='/angular-directives/inspector-gadget/';		//local
 	staticPath ='/';		//nodejs (local)
-	// staticPath ='/inspector-gadget/';		//gh-pages
+	staticPath ='/inspector-gadget/';		//gh-pages
 	var appPathRoute ='/';
 	var pagesPath =staticPath+'pages/';
 	

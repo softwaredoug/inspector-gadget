@@ -51,3 +51,7 @@ We support most paramaters supported by [bootstap's popover](http://getbootstrap
 Simply apply normal two-way data binding to the popover's, and let Angular do its magic!
 
 Currently, inspector-gadget only responds to hovers. 
+
+### Sponsors
+
+This project was developed for our search relevancy tuning tools [Quepid](http://quepid.com) and [Splainer](http://splainer.io) -- all while doing work for [OpenSource Connections](http://opensourceconnections.com)

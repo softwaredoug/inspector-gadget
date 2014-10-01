@@ -54,4 +54,4 @@ Currently, inspector-gadget only responds to hovers.
 
 ### Sponsors
 
-This project was developed for our search relevancy tuning tools [Quepid](http://quepid.com) and [Splainer](http://splainer.io) -- all while doing work for [OpenSource Connections](http://opensourceconnections.com)
+This project was developed for our search relevancy tuning tools [Quepid](http://quepid.com) and [Splainer](http://splainer.io) -- all while doing work for our Solr and Elasticsearch consulting firm [OpenSource Connections](http://opensourceconnections.com)

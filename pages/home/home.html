@@ -1,11 +1,13 @@
 <div class="container">
 
 <h1>Inspector Gadget</h1>
-<p>Inspector Gadget is a rich AngularJS Popover implementation (using bootstrap's popover) that lets you weave rich HTML into your popovers. As opposed to <a href="http://angular-ui.github.io/bootstrap/">angular-bootstrap's</a> popover, this popover lets you intersperse rich HTML to let users drill down into rich, marked-up content like charts and graphs. Other features include smart hovering, letting your user mouseover the popover without it closing!</p>
+<p>Inspector Gadget is an AngularJS <a href="http://getbootstrap.com/javascript/#popovers">popover</a> implementation that lets you create rich popover content with HTML and all of angular's goodies. This goes beyond <a href="http://angular-ui.github.io/bootstrap/">angular bootstrap's popover</a>, which gives a much simpler popover interface.
+
+<p>For usage, installation, and what-not, check out the <a href="http://github.com/softwaredoug/inspector-gadget">github repo</a>. Enough yaking, here's a few examples:</p>
 
 <h2>Popout Graphs!</h2>
 
-<p>Check out this example using the <a href="http://plnkr.co/edit/T9J7bz?p=preview">angular charts</a> module. Mouseover the link to see a rich graph.</p>
+<p>Check out this example using the <a href="http://plnkr.co/edit/T9J7bz?p=preview">angular charts</a> module. Mouseover the link to see a pretty graph.</p>
 
 <inspector-gadget data-container="body">
   <a style="background: #ccc" class="btn btn-default">Hover to see company sales!</a>
@@ -24,11 +26,7 @@
       </div>
     </div>
   </inspector-content>
-
-
 </inspector-gadget>
-
-
 
 <div class="row">
   <h3 class="col-md-6">Markup</h3>
@@ -100,7 +98,7 @@ angular.module('myApp').controller('ChartsCtrl', function($scope) {
 
 
 
-<h2>Basic example, free running counter</h2>
+<h2>Simpler example, free running counter, dynamically changing popover</h2>
 <p>Here's another example, using a simple free running counter:</p>
 
 <div ng-controller='HomeCtrl'>	

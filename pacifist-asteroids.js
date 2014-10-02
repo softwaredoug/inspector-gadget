@@ -259,18 +259,16 @@ var Game = function(sel) {
 };
 
 angular.module('myApp')
-.directive('pacifistAsteroids', function($timeout) {
+.directive('pacifistAsteroids', function() {
   var id = 0;
   return {
-    restrict: 'A',
+    restrict: 'E',
     template: '<div class="asteroids"></div>',
     link: function(scope, elm) {
-      $timeout(function() {
-        var sel = 'asteroids-' + id++;
-        elm.addClass(sel);
-        elm.g = new Game('.' + sel);
-        elm.removeClass(sel);
-      },100);
+      var sel = 'asteroids-' + id++;
+      elm.addClass(sel);
+      elm.g = new Game('.' + sel);
+      elm.removeClass(sel);
     }
   };
 

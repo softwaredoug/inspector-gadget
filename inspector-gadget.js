@@ -30,21 +30,14 @@ angular.module('swd.inspector-gadget')
   };
 
   // some helpers
-  var getThenMute = function (element, selector, tag) {
-    var childElm = element.find(selector);
-    if (childElm.length !== 1) {
-      var errStr = 'inspector-gadget expecting exactly one ' + selector + ' 0 or >1 found';
-      console.error(errStr);
-      throw errStr;
-    }
+  var tagHtml = function(childElm, tag) {
     if (tag) {
       var tagDiv = doc.createElement('div');
       tagDiv.setAttribute('data-inspector-gadget-tag', tag);
       tagDiv.setAttribute('style', 'display: none');
-      childElm[0].appendChild(tagDiv);
+      childElm.appendChild(tagDiv);
     }
-    var childHtml = childElm[0].innerHTML;
-    childElm[0].hidden = true;
+    var childHtml = childElm.innerHTML;
     return childHtml;
   };
 
@@ -69,24 +62,13 @@ angular.module('swd.inspector-gadget')
 
   var uniqueDirective = 1;
 
-  return {
-    restrict: 'E',
-    transclude: true,
-    //template: '<div>CAN WE JUST<div data-toggle="popover" ng-transclude></div></div>',
-    template: '<div style="display: inline-block" class="anchored_div" ng-transclude></div>',
-    
-    link: function(scope, element, attrs) {
+  var link = function(scope, element, attrs) {
       var anchoredDiv = element.find('.anchored_div');
       var root = rootNode(anchoredDiv);
 
-      // actually directly extracting the content here is preferred to 
-      // using controllers/scope to communicate between sub-directives 
-      // the problem with using scope is that scope is not isolated in this directive,
-      // (we don't want it to be isolated)
-      // there's no way not to interfere with a sibling inspector-gadget element
-      var myPopoverId = uniqueDirective++;
-      var titleHtml = getThenMute(element, 'inspector-title', myPopoverId);
-      var contentHtml = getThenMute(element, 'inspector-content');
+      var myPopoverId = scope._insp.popoverId;
+      var titleHtml = scope._insp.titleHtml;
+      var contentHtml = scope._insp.contentHtml;
 
       var popConfig = collectPopoverAttrArgs(attrs);
       var popControl = null;
@@ -133,7 +115,38 @@ angular.module('swd.inspector-gadget')
       });
       popControl = intPopover.bootstrap(anchoredDiv, popConfig);
       
-    },
+    };
+
+  return {
+    restrict: 'E',
+    transclude: true,
+    //template: '<div>CAN WE JUST<div data-toggle="popover" ng-transclude></div></div>',
+    //template: '<div style="display: inline-block" class="anchored_div" ng-transclude></div>',
+
+    compile: function(elem, attrs, transclude) {
+      return function(scope, /*out*/lElem/*out lAttrs*/) {
+        var childScope = scope.$new();
+        transclude(childScope, function(clone, innerScope) {
+          innerScope._insp = {};
+          var div = angular.element('<div class="anchored_div" style="display: inline-block"></div>');
+          angular.forEach(clone, function(c) {
+            if (c.nodeType !== 1 || (c.tagName !== 'INSPECTOR-TITLE' && c.tagName !== 'INSPECTOR-CONTENT')) {
+              div.append(c);
+            }
+            else if (c.nodeType === 1 && c.tagName === 'INSPECTOR-CONTENT') {
+              innerScope._insp.contentHtml = c.innerHTML;
+            }
+            else if (c.nodeType === 1 && c.tagName === 'INSPECTOR-TITLE') {
+              var myPopoverId = uniqueDirective++;
+              innerScope._insp.popoverId = myPopoverId;
+              innerScope._insp.titleHtml = tagHtml(c, myPopoverId);
+            }
+          });
+          lElem.append(div);
+        });
+        link(childScope, elem, attrs);
+      };
+    }
 
   };
 });

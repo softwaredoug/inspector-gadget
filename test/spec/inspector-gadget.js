@@ -73,9 +73,11 @@ describe('InspectorGadget', function() {
                    '  <h4>Hello</h4> <div>{{counter}}</div>'     +
                    ' </div>' + 
                    ' <inspector-title>' + 
+                   '  <bunny-tag></bunny-tag>' + 
                    ' Hello <em>{{name}}</em>' +
                    ' </inspector-title>' +
                    ' <inspector-content>' +
+                   '  <funny-tag></funny-tag>' + 
                    '  <p>Mary had a little {{animal}}</p> ' +
                    ' </inspector-content>' +
                    '</inspector-gadget>';
@@ -85,10 +87,21 @@ describe('InspectorGadget', function() {
       view = createView(scope, markup);
     });
 
+    it('doesnt transclude title, content', function() {
+      expect(doc.find('funny-tag').length).toEqual(0);
+      expect(doc.find('bunny-tag').length).toEqual(0);
+    });
+
     it('mouseover shows popover', function() {
       expect(doc.find('.popover').length).toEqual(0);
       anchElem.mouseenter();
       expect(doc.find('.popover').length).toEqual(1);
+    });
+    
+    it('mouseover now has title, content in doc', function() {
+      anchElem.mouseenter();
+      expect(doc.find('funny-tag').length).toEqual(1);
+      expect(doc.find('bunny-tag').length).toEqual(1);
     });
     
     it('updates popover scope', function() {

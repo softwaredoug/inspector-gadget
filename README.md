@@ -1,6 +1,6 @@
 # Inspector Gadget
 
-Better AngularJS Popover with HTML content. We constantly needed a better popover than the one [angular-ui bootstrap](http://angular-ui.github.io/bootstrap/) provided. So I thought I'd open source our implementation! See a [few demos](http://softwaredoug.github.io/inspector-gadget/).
+Better AngularJS Popover with HTML content. I frequently need a richer popover experience than the one [angular-ui bootstrap](http://angular-ui.github.io/bootstrap/) provides. So I thought I'd open source our implementation! See a [few demos](http://softwaredoug.github.io/inspector-gadget/).
 
 [![Build Status](https://travis-ci.org/softwaredoug/inspector-gadget.svg?branch=master)](https://travis-ci.org/softwaredoug/inspector-gadget)
 
@@ -51,3 +51,7 @@ We support most paramaters supported by [bootstap's popover](http://getbootstrap
 Simply apply normal two-way data binding to the popover's, and let Angular do its magic!
 
 Currently, inspector-gadget only responds to hovers. 
+
+### Sponsors
+
+This project was developed for our search relevancy tuning tools [Quepid](http://quepid.com) and [Splainer](http://splainer.io) -- all while doing work for our Solr and Elasticsearch consulting firm [OpenSource Connections](http://opensourceconnections.com)

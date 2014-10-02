@@ -3,6 +3,13 @@
  height: 500px;
 }
 
+.asteroids {
+ max-width: 500px;
+ width: auto;
+ max-height: 500px;
+ height: auto;
+}
+
 .container {
     margin-bottom: 100px;
 }

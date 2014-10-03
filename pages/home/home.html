@@ -12,7 +12,22 @@
     </inspector-gadget>
   <hr/>
 
-
+  <h2>NG repeat</h2>
+<inspector-gadget>
+    <div>Good times and bad times {{blah}} blah</div>
+    <inspector-title>
+    </inspector-title>
+    <inspector-content ng-non-bindable>
+      <span ng-controller="TestCtrl">
+        Stuff
+        {{name}}
+        <span ng-repeat="i in [1, 2, 3]">
+          <span ng-click="click(i)">click me</span>
+        </span>
+        Other Stuff
+      </span>
+    </inspector-content>
+</inspector-gadget>
 
   <div>
 

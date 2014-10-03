@@ -146,6 +146,29 @@ describe('InspectorGadget', function() {
     
   });
   
+  describe('ngRepeat', function() {
+      var markup = '<inspector-gadget>' +
+                   ' <inspector-title></inspector-title>' +
+                   ' <inspector-content ng-non-bindable>' + 
+                   '  <span ng-repeat="i in [1,2,3]">{{i * 10}}</span>' +
+                   ' </inspector-content>' + 
+                   '</inspector-gadget>';
+      beforeEach(function() {
+        scope = $rootScope.$new();
+        view = createView(scope, markup);
+      });
+
+      it('renders in inspector-content', function() {
+        anchElem.mouseenter();
+        var content = doc.find('.popover-content');
+        expect(content.html()).toContain('10');
+        expect(content.html()).toContain('20');
+        expect(content.html()).toContain('30');
+      });
+
+
+  });
+  
   describe('multiple popovers', function() {
       var anchors = null;
       var inspectors = null;

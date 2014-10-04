@@ -53,18 +53,18 @@ We support most paramaters supported by [bootstap's popover](http://getbootstrap
 
 Simply apply normal two-way data binding to the popover's, and let Angular do its magic!
 
-### Limitations 
+## Limitations 
 
 My boss calls these "opportunities for improvement".
 
-#### Hovers Only
+### Hovers Only
 
 Currently, inspector-gadget only responds to hovers. We built this in part to do smarter hovering. So we currently only implement our own custom hovering style, which keeps the popover open even as you hover the popover. I plan on looking into getting other bootstrap triggers implemented.
 
-#### A note on styling
+### A note on styling
 
 Dont style using inspector-* tags, use the bootstrap popover classes (.popover, .popver-title, .popover-content) if you need to style or otherwise interact with that whole div. Or add your own classes/ids/etc to content within the popover.
 
-### Sponsors
+## Sponsors
 
 This project was developed for our search relevancy tuning tools [Quepid](http://quepid.com) and [Splainer](http://splainer.io) -- all while doing work for our Solr and Elasticsearch consulting firm [OpenSource Connections](http://opensourceconnections.com)

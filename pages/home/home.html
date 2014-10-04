@@ -111,7 +111,11 @@ angular.module('myApp').controller('ChartsCtrl', function($scope) {
         Hello <b>World! Its {{tenSecTimer * 10}} o'clock</b>
       </inspector-title>
       <inspector-content>
-        Ipusum lorem <i>est</i> {{timer}}
+        <h4>Seconds Counter: {{timer}}</h4>
+        <h4>Previously timer was</h4>
+        <ul>
+          <li ng-repeat="i in [1,2,3]">{{timer - i}}</li>
+        </ul>
       </inspector-content>
     </inspector-gadget>
 </div>
@@ -122,18 +126,24 @@ angular.module('myApp').controller('ChartsCtrl', function($scope) {
 </div>
 <div class="row">
   <pre class="col-md-6" ng-non-bindable>
-<code>&lt;div ng-controller='HomeCtrl'&gt;  
-    &lt;inspector-gadget data-placement="bottom"&gt;
-        &lt;p&gt;Mouse me! {{tenSecTimer}}&lt;/p&gt;
-          &lt;p&gt;Marry had a little lamb its fleece was white as snow&lt;/p&gt;
-      &lt;inspector-title&gt;
-        Hello &lt;b&gt;World! Its {{tenSecTimer * 10}} o'clock&lt;/b&gt;
-      &lt;/inspector-title&gt;
-      &lt;inspector-content&gt;
-        Ipusum lorem &lt;i&gt;est&lt;/i&gt; {{timer}}
-      &lt;/inspector-content&gt;
-    &lt;/inspector-gadget&gt;
-&lt;/div&gt;</code>
+<code>
+&lt;inspector-gadget data-placement=&quot;bottom&quot;&gt;
+  &lt;div style=&quot;background: #ccc&quot;&gt;
+    &lt;p&gt;Mouse me! {{tenSecTimer}}&lt;/p&gt;
+      &lt;p&gt;Marry had a little lamb its fleece was white as snow&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;inspector-title&gt;
+    Hello &lt;b&gt;World! Its {{tenSecTimer * 10}} o'clock&lt;/b&gt;
+  &lt;/inspector-title&gt;
+  &lt;inspector-content&gt;
+    &lt;h4&gt;Seconds Counter: {{timer}}&lt;/h4&gt;
+    &lt;h4&gt;Previously timer was&lt;/h4&gt;
+    &lt;ul&gt;
+      &lt;li ng-repeat=&quot;i in [1,2,3]&quot;&gt;{{timer - i}}&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/inspector-content&gt;
+&lt;/inspector-gadget&gt;
+</code>
   </pre>
   <pre class="col-md-6">
 angular.module('myApp').controller('HomeCtrl', function($scope, $interval) {

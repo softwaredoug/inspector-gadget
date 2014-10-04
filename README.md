@@ -55,7 +55,7 @@ Simply apply normal two-way data binding to the popover's, and let Angular do it
 
 ### Limitations 
 
-My boss calls these "opportunities for improvement". You might call them bugs.
+My boss calls these "opportunities for improvement".
 
 #### Hovers Only
 

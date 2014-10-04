@@ -149,7 +149,7 @@ describe('InspectorGadget', function() {
   describe('ngRepeat', function() {
       var markup = '<inspector-gadget>' +
                    ' <inspector-title></inspector-title>' +
-                   ' <inspector-content ng-non-bindable>' + 
+                   ' <inspector-content>' + 
                    '  <span ng-repeat="i in [1,2,3]">{{i * 10}}</span>' +
                    ' </inspector-content>' + 
                    '</inspector-gadget>';

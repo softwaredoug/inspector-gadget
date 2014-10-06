@@ -70,9 +70,14 @@ angular.module('swd.inspector-gadget')
         var contentHtml = scope._insp.contentHtml;
 
         var popConfig = collectPopoverAttrArgs(attrs);
+        var timeout = 500;
+        if (attrs.hasOwnProperty('timeout')) {
+          timeout = parseInt(attrs.timeout, 10);
+        }
+
         var popControl = null;
 
-        var timeoutObj = null;
+        var hidePromise = null;
         
         popConfig.html = true;
         popConfig.title = function() {
@@ -82,35 +87,47 @@ angular.module('swd.inspector-gadget')
           return contentHtml;
         };
         popConfig.trigger = 'manual';
+
+        var rendered;
+
+        var isPopOpen = function(root, myPopoverId) {
+          return getPopoverContainer(root, myPopoverId).length > 0;
+        };
+
+        var hide = function() {
+          popControl.hide();
+        };
+
         anchoredDiv.mouseenter(function() {
           // trigger hover event, open popover, link btn to modal
-          popControl.show();
-          // TODO remaining problem -- this compiles 
-          var popCont = getPopoverContainer(root, myPopoverId);
-          $compile(popCont.contents())(scope);
-          scope.$apply();
+          $timeout.cancel(hidePromise);
+          if (!isPopOpen(root, myPopoverId)) {
+            rendered = false;
+            popControl.show();
+            // TODO remaining problem -- this compiles 
+            var popCont = getPopoverContainer(root, myPopoverId);
+            popCont.mouseenter(function() {
+              $timeout.cancel(hidePromise);
+            });
+            popCont.mouseleave(function() {
+              $timeout.cancel(hidePromise);
+              hidePromise = $timeout(function() {
+                hide();
+              }, timeout);
+            });
+
+            $compile(popCont.contents())(scope);
+            scope.$apply();
+          }
+        });
+        anchoredDiv.on('shown.bs.popover', function() {
+          rendered = true;
         });
         anchoredDiv.mouseleave(function() {
-          /* only leave if hoverd off content too*/
-          var popCont = getPopoverContainer(root, myPopoverId);
-          var hoveringPopover = false;
-
-          popCont.mouseenter(function() {
-            hoveringPopover = true;
-          });
-          popCont.mouseleave(function() {
-            hoveringPopover = false;
-          });
-
-          var hidePop = function() {
-            if (!hoveringPopover) {
-              popControl.hide();
-            } else {
-              timeoutObj = $timeout(hidePop, 300);
-            }
-          };
-
-          timeoutObj = $timeout(hidePop, 300);
+          $timeout.cancel(hidePromise);
+          hidePromise = $timeout(function() {
+            hide();
+          }, timeout);
         });
         popControl = intPopover.bootstrap(anchoredDiv, popConfig);
         

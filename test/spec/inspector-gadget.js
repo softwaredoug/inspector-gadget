@@ -129,7 +129,6 @@ describe('InspectorGadget', function() {
       expect(doc.find('.popover').length).toEqual(1);
       var popover = angular.element(doc.find('.popover'));
       popover.mouseenter();
-      $timeout.flush();
       expect(doc.find('.popover').length).toEqual(1);
     });
     
@@ -143,6 +142,38 @@ describe('InspectorGadget', function() {
       $timeout.flush();
       expect(doc.find('.popover').length).toEqual(0);
     });
+    
+    it('mouseover, leave, over keeps open popover', function() {
+      expect(doc.find('.popover').length).toEqual(0);
+      anchElem.mouseenter();
+      anchElem.mouseleave();
+      anchElem.mouseenter();
+      anchElem.mouseleave();
+      expect(doc.find('.popover').length).toEqual(1);
+    });
+    
+    it('stay rendered if anchor moused off just a bit', function() {
+      expect(doc.find('.popover').length).toEqual(0);
+      anchElem.mouseenter();
+      anchElem.mouseleave();
+      expect(doc.find('.popover').length).toEqual(1);
+      $timeout.flush();
+      expect(doc.find('.popover').length).toEqual(0);
+    });
+    
+    it('stay rendered if popover moused off just a bit', function() {
+      expect(doc.find('.popover').length).toEqual(0);
+      anchElem.mouseenter();
+      expect(doc.find('.popover').length).toEqual(1);
+      var popover = angular.element(doc.find('.popover'));
+      anchElem.mouseleave();
+      popover.mouseenter();
+      popover.mouseleave();
+      expect(doc.find('.popover').length).toEqual(1);
+      $timeout.flush();
+      expect(doc.find('.popover').length).toEqual(0);
+    });
+    
     
   });
   

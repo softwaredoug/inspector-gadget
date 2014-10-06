@@ -51,7 +51,10 @@ We support most paramaters supported by [bootstap's popover](http://getbootstrap
     <inspector-gadget data-placement="bottom" data-container="body">
     ...
 
-Simply apply normal two-way data binding to the popover's, and let Angular do its magic!
+We also support a `timeout` parameter which specifies in milliseconds how long after hovering off the anchor until the popover is hidden. The default value is 500 ms. Specify it as follows:
+
+    <inspector-gadget data-placement="bottom" data-container="body" data-timeout="1000">
+    ...
 
 ## Limitations 
 

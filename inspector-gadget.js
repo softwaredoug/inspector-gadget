@@ -62,7 +62,7 @@ angular.module('swd.inspector-gadget')
       var uniqueDirective = 1;
 
       var link = function(scope, element, attrs) {
-        var anchoredDiv = element.find('.anchored_div');
+        var anchoredDiv = element.find('.popover-anchor');
         var root = rootNode(anchoredDiv);
 
         var myPopoverId = scope._insp.popoverId;
@@ -142,7 +142,7 @@ angular.module('swd.inspector-gadget')
             var childScope = scope.$new();
             transclude(childScope, function(clone, innerScope) {
               innerScope._insp = {};
-              var div = angular.element('<div class="anchored_div" style="display: inline-block"></div>');
+              var div = angular.element('<div class="popover-anchor"></div>');
               angular.forEach(clone, function(c) {
                 if (c.nodeType !== 1 || (c.tagName !== 'INSPECTOR-TITLE' && c.tagName !== 'INSPECTOR-CONTENT')) {
                   div.append(c);

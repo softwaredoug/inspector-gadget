@@ -61,7 +61,7 @@ describe('InspectorGadget', function() {
     doc = angular.element(docMarkup);
     inspElem = doc.find('inspector-gadget');
     var compiled = $compile(doc)(scope);
-    anchElem = angular.element(doc.find('.anchored_div')[0]);
+    anchElem = angular.element(doc.find('.popover-anchor')[0]);
     $rootScope.$digest();
     return compiled;
   };
@@ -229,7 +229,7 @@ describe('InspectorGadget', function() {
       beforeEach(function() {
         scope = $rootScope.$new();
         view = createView(scope, markup);
-        anchors = doc.find('.anchored_div');
+        anchors = doc.find('.popover-anchor');
         inspectors = doc.find('inspector-gadget');
       });
 

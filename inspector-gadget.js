@@ -158,7 +158,7 @@ angular.module('swd.inspector-gadget')
               });
               lElem.append(div);
             });
-            link(childScope, elem, attrs);
+            link(childScope, angular.element(lElem[0]), attrs);
           };
         },
       };

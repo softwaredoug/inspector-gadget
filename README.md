@@ -70,13 +70,16 @@ Dont style using inspector-\* tags, use the bootstrap popover classes (.popover,
 
 #### What's popover-anchor?
 
-This is a css class that represents the div with hovered HTML -- the markup anchored to the screen. Style as needed! A common thing you may wish to do is style this div to shrink to the content. IE
+This corresponds to the content anchored to the page. What you hover over. Use it to style this entire div.
+
+If popovers are appearing at wierd places, remember its *this div* that matters. This div flows onto the page as a regular div, its up to you to size it correctly.
+
+A common thing you may wish to do is style this div to shrink to the content. IE
 
     .popover-content {
        display: inline-block
     }
 
-The placement of this div impacts the placement of the popover.
 
 ## Sponsors
 

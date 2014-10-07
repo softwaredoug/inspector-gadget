@@ -63,7 +63,11 @@ Currently, inspector-gadget only responds to hovers. We built this in part to do
 
 ### A note on styling
 
-Dont style using inspector-* tags, use the bootstrap popover classes (.popover, .popver-title, .popover-content) if you need to style or otherwise interact with that whole div. Or add your own classes/ids/etc to content within the popover.
+Dont style using inspector-* tags, use the bootstrap popover classes (.popover, .popover-anchor, .popver-title, .popover-content) if you need to style or otherwise interact with that whole div. Or add your own classes/ids/etc to content within the popover.
+
+#### What's popover-anchor?
+
+This is a css class that represents the div with hovered HTML -- the markup anchored to the screen. Style as needed! 
 
 ## Sponsors
 
